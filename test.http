@@ -1,0 +1,14 @@
+### Create a Task
+POST http://127.0.0.1:8000/api/tasks
+Content-Type: application/json
+Accept: application/json
+
+{
+    "title": "Software Engineering Internship Task",
+    "due_date": "2026-04-05",
+    "priority": "high"
+}
+
+### List All Tasks
+GET http://127.0.0.1:8000/api/tasks
+Accept: application/json
