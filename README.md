@@ -1,109 +1,202 @@
-Task Management System (Laravel 11)
+# Task Management System (Laravel 11)
+
+## Description
 A robust Task Management API built with Laravel 11, featuring full CRUD capabilities, priority-based sorting, and category management. This project is optimized for high-performance data handling and is deployed on Railway with a MySQL database.
 
-Live Demo
-Link: https://web-production-9eac3.up.railway.app
+---
 
-(Note: Use the Railway Console to run migrations if the database appears empty during testing.)
+## Features
+- Create tasks with priority levels
+- View all tasks with category filters
+- Update task status and details
+- Delete tasks
+- Category management for task organization
+- Full Eloquent ORM and MySQL integration
 
-Features
-Full CRUD: Create, Read, Update, and Delete tasks.
+---
 
-Database: MySQL integration with Eloquent ORM.
+## Technologies Used
+- Laravel 11
+- PHP 8.2+
+- MySQL
+- Composer
+- Tailwind CSS
+- Railway (Deployment)
 
-Validation: Strict request validation for data integrity.
+---
 
-Optimization: Downgraded Symfony and PHPUnit components for broad cloud compatibility (PHP 8.2+).
+## Installation
 
-Category Support: Organize tasks into distinct categories for better management.
-
-Local Setup Instructions
-Prerequisites
-PHP 8.2 or 8.3
-
-Composer
-
-MySQL / MariaDB
-
-Node.js & NPM
-
-Installation
-Clone the repository:
-
-Bash
+### 1. Clone the Repository
+```bash
 git clone https://github.com/mercynjambi/cytonn-task-manager.git
 cd cytonn-task-manager
-Install dependencies:
+```
 
-Bash
+### 2. Install Dependencies (Composer & NPM)
+```bash
 composer install
 npm install && npm run build
-Environment Setup:
+```
 
-Bash
+---
+
+## Environment Setup
+
+### 1. Create Environment File
+```bash
 cp .env.example .env
 php artisan key:generate
-Configure Database:
-Update your .env file with your local MySQL credentials:
+```
 
-Code snippet
+### 2. Configure Database
+Update your `.env` file:
+
+```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=task_db
 DB_USERNAME=root
 DB_PASSWORD=
-Run Migrations and Seeders:
+```
 
-Bash
+---
+
+## Database Setup
+
+### 1. Create Database
+```sql
+CREATE DATABASE task_db;
+```
+
+---
+
+## Database Migration
+
+### Run Migrations and Seeders
+```bash
 php artisan migrate --seed
-Start Server:
+```
 
-Bash
+### Example Table Schema
+```sql
+CREATE TABLE tasks (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
+    status ENUM('pending', 'completed') DEFAULT 'pending',
+    category_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+---
+
+## Running the Application
+
+### Start Local Server
+```bash
 php artisan serve
-Deployment Instructions (Railway)
-This project is configured for seamless deployment on Railway using the Railpack builder.
+```
 
-Database Provisioning:
+Open in browser:
+```
+http://127.0.0.1:8000
+```
 
-Create a MySQL instance on Railway.
+---
 
-Connect the MySQL service to the Web service using Railway's shared environment variables.
+## Deployment Instructions (Railway)
 
-Environment Variables:
-Required variables in the Railway dashboard:
+### 1. Environment Variables
+Set the following in your Railway dashboard:
 
-APP_KEY: (Generated via CLI)
+- `APP_KEY` = your generated app key  
+- `DB_CONNECTION` = mysql  
+- `RAILWAY_START_COMMAND` = php artisan serve --host 0.0.0.0 --port $PORT  
 
-DB_CONNECTION: mysql
+---
 
-RAILWAY_START_COMMAND: php artisan serve --host 0.0.0.0 --port $PORT
-
-Database Migration:
-Access the Railway SSH/Console and execute:
-
-Bash
+### 2. Run Migrations Online
+```bash
 php artisan migrate --force
-Example API Requests
-1. Get All Tasks
+```
+
+---
+
+## API Endpoints
+
+### Get All Tasks
+```bash
 GET /api/tasks
+```
 
-Response: 200 OK (JSON list of tasks)
-
-2. Create a Task
+### Create Task
+```bash
 POST /api/tasks
+Content-Type: application/json
 
-JSON
 {
-    "title": "Complete Cytonn Assessment",
-    "description": "Submit the repo link before the 2pm deadline",
-    "priority": "high",
-    "category_id": 1
+  "title": "Complete Cytonn Assessment",
+  "description": "Submit before 2pm deadline",
+  "priority": "high",
+  "category_id": 1
 }
-3. Delete a Task
+```
+
+### Update Task
+```bash
+PUT /api/tasks/{id}
+Content-Type: application/json
+
+{
+  "status": "completed"
+}
+```
+
+### Delete Task
+```bash
 DELETE /api/tasks/{id}
+```
 
-Response: 204 No Content
+---
 
-Author
+## Project Structure
+```
+cytonn-task-manager/
+├── app/
+├── bootstrap/
+├── config/
+├── database/
+├── public/
+├── resources/
+├── routes/
+├── storage/
+├── .env
+├── composer.json
+└── README.md
+```
+
+---
+
+## Troubleshooting
+
+### Check PHP and Composer
+```bash
+php -v
+composer --version
+```
+
+### Clear Cache
+```bash
+php artisan config:clear
+php artisan cache:clear
+```
+
+---
+
+## Author
 Mercy Njambi
